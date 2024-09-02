@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
-API_KEY = 'aa69f2c40bb8623a4bdccb23dceaaad8'  
+API_KEY = '##############   '  
 BASE_URL = "http://api.openweathermap.org/data/2.5/"
 
 def get_weather_by_city(city_name):
