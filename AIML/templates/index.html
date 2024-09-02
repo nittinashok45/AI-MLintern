@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .weather-info, .forecast-info {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .forecast-day {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter city name">
+        <button type="submit">Get Weather</button>
+    </form>
+
+    {% if weather_data %}
+    <div class="weather-info">
+        <h2>Weather in {{ weather_data.name }} ({{ weather_data.sys.country }}):</h2>
+        <p><img src="http://openweathermap.org/img/wn/{{ weather_data.weather[0].icon }}@2x.png" alt="Weather icon"></p>
+        <p>Temperature: {{ weather_data.main.temp }}°C</p>
+        <p>Weather: {{ weather_data.weather[0].description.capitalize() }}</p>
+        <p>Humidity: {{ weather_data.main.humidity }}%</p>
+        <p>Wind Speed: {{ weather_data.wind.speed }} m/s</p>
+    </div>
+    {% endif %}
+
+    {% if forecast_data %}
+    <div class="forecast-info">
+        <h2>5-Day Weather Forecast for {{ forecast_data.city.name }}:</h2>
+        {% for forecast in forecast_data.list %}
+        {% if loop.index is divisibleby 8 %}
+        <div class="forecast-day">
+            <h3>{{ forecast.dt_txt.split(' ')[0] }}</h3>
+            <p><img src="http://openweathermap.org/img/wn/{{ forecast.weather[0].icon }}@2x.png" alt="Weather icon"></p>
+            <p>Time: {{ forecast.dt_txt.split(' ')[1] }}</p>
+            <p>Temperature: {{ forecast.main.temp }}°C</p>
+            <p>Weather: {{ forecast.weather[0].description.capitalize() }}</p>
+            <p>Humidity: {{ forecast.main.humidity }}%</p>
+            <p>Wind Speed: {{ forecast.wind.speed }} m/s</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
